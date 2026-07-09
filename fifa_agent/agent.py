@@ -29,24 +29,24 @@ def decide(stamina, urgency, threat_level, possession, rating, position, minutes
     
     # Priority 1: Fatigue management
     if stamina < 30:
-        return "Conservative — safe passes only"
+        return "Conservative - safe passes only"
     
     # Priority 2: Emergency defense (high threat + no possession)
     elif threat_level > 4 and possession == False:
-        return "Defend — track back"
+        return "Defend - track back"
     
     # Priority 3: Endgame tactics (final 10 minutes)
     elif minutes_left <= 10:
-        if urgency >= 3.5:  # Losing or tied — be aggressive
-            return "Rush — High Press"
-        else:  # Winning comfortably — consolidate
-            return "Defend — Hold Possession"
+        if urgency >= 3.5:  # Losing or tied -> be aggressive
+            return "Rush - High Press"
+        else:  # Winning comfortably -> consolidate
+            return "Defend - Hold Possession"
     
     # Priority 4: Urgency-driven play
     elif urgency >= 3.5:
-        return "Rush — High Press"
+        return "Rush - High Press"
     elif urgency >= 2:
-        return "Balanced — normal play"
+        return "Balanced - normal play"
     
     # Priority 5: Star player with possession
     if possession == True and rating > 80:

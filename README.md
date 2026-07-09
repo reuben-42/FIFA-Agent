@@ -292,13 +292,13 @@ else:
 
 The agent is tested with **5 predefined scenarios** covering diverse match situations:
 
-| Scenario | Goal Gap | Minutes Left | Stamina | Possession | Position | Expected Action |
-|----------|----------|--------------|---------|-----------|----------|-----------------|
-| **Easy** | +2 (winning) | 30 | 80 | Yes | Winger | Attempt dribble or cross |
-| **Balanced** | 0 (tied) | 50 | 60 | Yes | Midfielder | Balanced — normal play |
-| **High Pressure** | -2 (losing) | 85 | 25 | No | Defender | Conservative — safe passes only |
-| **Endgame Losing** | -1 (losing) | 8 | 45 | Yes | Striker | Rush — High Press |
-| **Endgame Winning** | +2 (winning) | 5 | 50 | Yes | Midfielder | Defend — Hold Possession |
+| Scenario | Goal Gap | Minutes Left | Stamina | Possession | Rating | Position | Rating Gap | Expected Action |
+|----------|----------|--------------|---------|------------|--------|----------|------------|-----------------|
+| **Easy** | +2 (winning) | 30 | 80 | Yes | 85 | Winger | -10 | Balanced - normal play |
+| **Balanced** | 0 (tied) | 50 | 60 | Yes | 75 | Midfielder | 5 | Balanced - normal play |
+| **High Pressure** | -2 (losing) | 85 | 25 | No | 85 | Defender | 15 | Conservative - safe passes only |
+| **Endgame Losing** | -1 (losing) | 8 | 45 | Yes | 82 | Striker | 2 | Rush - High Press |
+| **Endgame Winning** | +2 (winning) | 5 | 50 | Yes | 79 | Midfielder | -5 | Rush - High Press |
 
 ### Running Specific Tests
 
