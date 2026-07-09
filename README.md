@@ -369,16 +369,23 @@ with open("log.txt", "r") as f:
 
 ---
 
-## Future Enhancements
+## Current Limitations & Future Enhancements
 
-- [ ] Add more player positions (Defender, Center-back, Goalkeeper)
-- [ ] Implement learning from match outcomes to adjust weights
-- [ ] Add formation-based tactics (3-5-2, 4-2-3-1, etc.)
-- [ ] Real-time integration with EA FC 26 API
-- [ ] Multi-player coordination (team-wide decision making)
-- [ ] Injury and substitution logic
-- [ ] Set-piece handling (corners, free-kicks, penalties)
-- [ ] Opponent style adaptation
+- Limitation: The code only has offensive checks for wingers, midfielders, and strikers with a rating over 80, leaving everyone else with a generic default behavior.
+    - [ ]   Improvement: Add more player positions (Defender, Center-back, Goalkeeper)
+- Limitation: The sense() function calculates an urgency variable using score difference and time, but it is statically weighed and completely ignored by the decision logic.
+     - [ ] Improvement: Implement learning from match outcomes to adjust weights
+- Limitation: The agent has a "blind spot" and operates without environmental data, field coordinates, tracking info, or knowledge of where the actual ball is.
+   - [ ] Improvement: Real-time integration with EA FC 26 API
+- Limitation: The agent only checks if stamina is below 30 to "slow down" but has no concept of physical injury, fatigue depth, or how to swap players out
+   - [ ] Improvement: Injury and substitution logic
+
+### Overall Future Enhancements
+   - [ ] Add formation-based tactics (3-5-2, 4-2-3-1, etc.)
+   - [ ] Multi-player coordination (team-wide decision making)
+   - [ ] Set-piece handling (corners, free-kicks, penalties)
+   - [ ] Opponent style adaptation
+   - [ ] Foul Play, and red & yellow cards
 
 ---
 
