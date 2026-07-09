@@ -4,6 +4,7 @@ from state import get_score_state, get_time_state, get_threat_level, get_urgency
 from agent import decide, act, record
 
 # Three scenarios covering an easy match, a balanced match, and a high-pressure match.
+# Plus an endgame scenario to test late-game tactics.
 SCENARIOS = {
     "Easy": {
         "goal_gap": 2, "minutes_left": 30, "stamina": 80,
@@ -16,6 +17,14 @@ SCENARIOS = {
     "High Pressure": {
         "goal_gap": -2, "minutes_left": 85, "stamina": 25,
         "possession": False, "rating": 85, "position": "Defender", "rating_gap": 15
+    },
+    "Endgame Losing": {
+        "goal_gap": -1, "minutes_left": 8, "stamina": 45,
+        "possession": True, "rating": 82, "position": "Striker", "rating_gap": 2
+    },
+    "Endgame Winning": {
+        "goal_gap": 2, "minutes_left": 5, "stamina": 50,
+        "possession": True, "rating": 79, "position": "Midfielder", "rating_gap": -5
     },
 }
 
@@ -31,7 +40,8 @@ def run_tests():
 
         action = decide(
             raw_state["stamina"], urgency, threat_level,
-            raw_state["possession"], raw_state["rating"], raw_state["position"]
+            raw_state["possession"], raw_state["rating"], raw_state["position"],
+            raw_state["minutes_left"]
         )
 
         print(f"[SCENARIO: {name}] State: {raw_state} --> Action: {action}")
