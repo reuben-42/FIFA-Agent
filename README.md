@@ -1,4 +1,4 @@
-# FIFA/EA FC 26 Baseline Agent
+f# FIFA/EA FC 26 Baseline Agent
 
 A sophisticated AI agent for FIFA/EA FC 26 that makes intelligent in-game decisions based on real-time match state. The agent uses a data-driven approach to balance offensive, defensive, and tactical decisions based on stamina, score, time, and player ratings.
 
@@ -375,7 +375,7 @@ with open("log.txt", "r") as f:
     - [ ]   Improvement: Add more player positions (Defender, Center-back, Goalkeeper)
 - Limitation: The sense() function calculates an urgency variable using score difference and time, but it is statically weighed and completely ignored by the decision logic.
      - [ ] Improvement: Implement learning from match outcomes to adjust weights
-- Limitation: The agent has a "blind spot" and operates without environmental data, field coordinates, tracking info, or knowledge of where the actual ball is.
+- Limitation: The agent operates without environmental data, field coordinates, tracking info, or knowledge of where the actual ball is.
    - [ ] Improvement: Real-time integration with EA FC 26 API
 - Limitation: The agent only checks if stamina is below 30 to "slow down" but has no concept of physical injury, fatigue depth, or how to swap players out
    - [ ] Improvement: Injury and substitution logic
