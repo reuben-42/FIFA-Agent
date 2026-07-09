@@ -16,7 +16,8 @@ def run_default_scenario():
 
     action = decide(
         raw_state["stamina"], urgency, threat_level,
-        raw_state["possession"], raw_state["rating"], raw_state["position"]
+        raw_state["possession"], raw_state["rating"], raw_state["position"],
+        raw_state["minutes_left"]
     )
 
     print(f"[SCENARIO: Default] State: {raw_state} --> Action: {action}")
