@@ -1,11 +1,3 @@
-State: {'stamina': 75, 'goal_gap': -1, 'minutes_left': 82, 'rating_gap': 10, 'possession': False, 'rating': 85, 'position': 'Winger'} --> Action: Balanced — normal play
-State: {'goal_gap': 2, 'minutes_left': 30, 'stamina': 80, 'possession': True, 'rating': 85, 'position': 'Winger', 'rating_gap': -10} --> Action: Balanced — normal play
-State: {'goal_gap': 0, 'minutes_left': 50, 'stamina': 60, 'possession': True, 'rating': 75, 'position': 'Midfielder', 'rating_gap': 5} --> Action: Balanced — normal play
-State: {'goal_gap': -2, 'minutes_left': 85, 'stamina': 25, 'possession': False, 'rating': 85, 'position': 'Defender', 'rating_gap': 15} --> Action: Conservative — safe passes only
-State: {'stamina': 75, 'goal_gap': -1, 'minutes_left': 82, 'rating_gap': 10, 'possession': False, 'rating': 85, 'position': 'Winger'} --> Action: Balanced — normal play
-State: {'goal_gap': 2, 'minutes_left': 30, 'stamina': 80, 'possession': True, 'rating': 85, 'position': 'Winger', 'rating_gap': -10} --> Action: Balanced — normal play
-State: {'goal_gap': 0, 'minutes_left': 50, 'stamina': 60, 'possession': True, 'rating': 75, 'position': 'Midfielder', 'rating_gap': 5} --> Action: Balanced — normal play
-State: {'goal_gap': -2, 'minutes_left': 85, 'stamina': 25, 'possession': False, 'rating': 85, 'position': 'Defender', 'rating_gap': 15} --> Action: Conservative — safe passes only
 State: {'stamina': 75, 'goal_gap': -1, 'minutes_left': 82, 'rating_gap': 10, 'possession': False, 'rating': 85, 'position': 'Winger'} --> Action: Balanced - normal play
 State: {'goal_gap': 2, 'minutes_left': 30, 'stamina': 80, 'possession': True, 'rating': 85, 'position': 'Winger', 'rating_gap': -10} --> Action: Balanced - normal play
 State: {'goal_gap': 0, 'minutes_left': 50, 'stamina': 60, 'possession': True, 'rating': 75, 'position': 'Midfielder', 'rating_gap': 5} --> Action: Balanced - normal play

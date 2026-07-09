@@ -1,8 +1,8 @@
 # agent.py — the sense -> decide -> act -> record loop
 
-import os
+# import os
 
-LOG_PATH = os.path.join(os.path.dirname(__file__), "log.txt")
+# LOG_PATH = os.path.join(os.path.dirname(__file__), "log.txt")
 
 
 def sense():
@@ -68,5 +68,8 @@ def act(action):
 
 def record(state, action):
     # Append the full state and the chosen action to log.txt for later review.
-    with open(LOG_PATH, "a") as log_file:
+    # with open(LOG_PATH, "a") as log_file:
+        # log_file.write(f"State: {state} --> Action: {action}\n")
+    
+    with open("fifa_agent/log.txt", "a", encoding="utf-8") as log_file:
         log_file.write(f"State: {state} --> Action: {action}\n")
