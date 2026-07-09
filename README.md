@@ -386,10 +386,6 @@ with open("log.txt", "r") as f:
 
 **University Game AI Project** — MSFT Group 4
 
-Two independently developed implementations merged for optimal performance combining:
-- Your modular architecture + comprehensive testing
-- Friend's endgame tactics + priority logic
-
 ---
 
 ## License
