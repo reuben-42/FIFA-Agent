@@ -44,7 +44,7 @@ def run_tests():
             raw_state["minutes_left"]
         )
 
-        print(f"[SCENARIO: {name}] State: {raw_state} --> Action: {action}")
+        print(f"\n[SCENARIO: {name}] State: {raw_state} --> Action: {action}")
         act(action)
         record(raw_state, action)
 
