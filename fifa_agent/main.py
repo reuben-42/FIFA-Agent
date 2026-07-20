@@ -15,6 +15,7 @@ def run_default_scenario():
     urgency = get_urgency(score_state, time_state, threat_level, raw_state["possession"])
 
     action = decide(
+        raw_state["goal_gap"],
         raw_state["stamina"], 
         urgency, 
         threat_level,

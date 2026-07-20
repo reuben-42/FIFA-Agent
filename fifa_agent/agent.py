@@ -19,7 +19,7 @@ def sense():
     }
 
 
-def decide(stamina, urgency, threat_level, possession, rating, position, minutes_left):
+def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left):
     # Choose an action following a strict priority order:
     # 1. Fatigue overrides everything else.
     # 2. Being under threat with no ball forces a defensive response.
@@ -37,7 +37,7 @@ def decide(stamina, urgency, threat_level, possession, rating, position, minutes
     
     # Priority 3: Endgame tactics (final 10 minutes)
     elif minutes_left <= 10:
-        if urgency >= 3.5:  # Losing or tied -> be aggressive
+        if score_diff <= 0:  # Losing or tied -> be aggressive
             return "Rush - High Press"
         else:  # Winning comfortably -> consolidate
             return "Defend - Hold Possession"
