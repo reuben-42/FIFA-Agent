@@ -45,18 +45,39 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # Priority 4: Urgency-driven play
     elif urgency >= 3.5:
         return "Rush - High Press"
-    elif urgency >= 2:
+    elif urgency < 3.5:
         return "Balanced - normal play"
     
     # Priority 5: Star player with possession
-    if possession == True and rating > 80:
-        if position.lower() == "winger":
-            return "Attempt dribble or cross"
-        elif position.lower() == "striker":
+    if possession == True: 
+        if position.lower() == "striker":
             return "Attempt goal"
+        
+        elif position.lower() == "defender":
+            if threat_level >= 3:
+                return "Clear long"
+            else:
+                return "Attempt safe pass"
+        
+        elif position.lower() == "winger":
+            if rating > 65:
+                return "Attempt cross"
+            else:
+                return "Attempt dribble"
+        
         elif position.lower() == "midfielder":
-            return "Attempt pass or goal"
-    
+            if rating > 75:
+                return "Attempt goal"
+            else:
+                return "Attempt pass"
+        
+        elif position.lower() == "goalkeeper":
+            if urgency >= 4:
+                return "Boot the ball downfield"
+            else:
+                return "Pass to nearby player"
+                
+        
     # Default: Hold possession
     return "Hold Possession"
 
