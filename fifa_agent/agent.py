@@ -27,59 +27,69 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # 4. Otherwise, urgency drives how aggressively the team plays.
     # 5. If none of the above apply, a highly-rated player on the ball tries something special.
     
-    # Priority 1: Fatigue management
-    if stamina < 30:
-        return "Conservative - safe passes only"
+    actions = []
+
+    # ---------------------------------------------------------
+    # LAYER 1: META / HEALTH ACTIONS:
+    # ---------------------------------------------------------
+    if stamina < 20:
+        actions.append("Request Substitution")
     
-    # Priority 2: Emergency defense (high threat + no possession)
-    elif threat_level > 4 and possession == False:
-        return "Defend - track back"
-    
-    # Priority 3: Endgame tactics (final 10 minutes)
-    elif minutes_left <= 10:
+    # ---------------------------------------------------------
+    # LAYER 2: TEAM FORMATION TACTICS:
+    # ---------------------------------------------------------
+    if minutes_left <= 10:
         if score_diff <= 0:  # Losing or tied -> be aggressive
-            return "Rush - High Press"
+            actions.append("TEAM FORMATION: Rush - High Press")
         else:  # Winning comfortably -> consolidate
-            return "Defend - Hold Possession"
+            actions.append("TEAM FORMATION: Defend - Hold Possession")
     
-    # Priority 4: Urgency-driven play
     elif urgency >= 3.5:
-        return "Rush - High Press"
-    elif urgency < 3.5:
-        return "Balanced - normal play"
+        actions.append("TEAM FORMATION: Rush - High Press")
     
-    # Priority 5: Star player with possession
-    if possession == True: 
+    else:
+        actions.append("TEAM FORMATION: Balanced - Normal Play")
+    
+    # ---------------------------------------------------------
+    # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS:
+    # ---------------------------------------------------------
+    if not possession:
+        # Off-Ball Actions
+        if threat_level > 4:
+            actions.append("Defend - Track Back")
+        else:
+            actions.append("Hold Defensive Formation")
+    
+    else:
+        # On-Ball Actions
         if position.lower() == "striker":
-            return "Attempt goal"
+            actions.append("Attempt goal")
         
         elif position.lower() == "defender":
             if threat_level >= 3:
-                return "Clear long"
+                actions.append("Clear long")
             else:
-                return "Attempt safe pass"
+                actions.append("Attempt safe pass")
         
         elif position.lower() == "winger":
             if rating > 65:
-                return "Attempt cross"
+                actions.append("Attempt cross")
             else:
-                return "Attempt dribble"
+                actions.append("Attempt dribble")
         
         elif position.lower() == "midfielder":
             if rating > 75:
-                return "Attempt goal"
+                actions.append("Attempt goal")
             else:
-                return "Attempt pass"
+                actions.append("Attempt pass")
         
         elif position.lower() == "goalkeeper":
             if urgency >= 4:
-                return "Boot the ball downfield"
+                actions.append("Boot the ball downfield")
             else:
-                return "Pass to nearby player"
-                
-        
-    # Default: Hold possession
-    return "Hold Possession"
+                actions.append("Pass to nearby player")
+    
+    return actions
 
 
 def act(action):

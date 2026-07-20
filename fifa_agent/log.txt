@@ -1,0 +1,6 @@
+State: {'stamina': 75, 'goal_gap': -1, 'minutes_left': 82, 'rating_gap': 10, 'possession': False, 'rating': 85, 'position': 'Winger'} --> Action: ['TEAM FORMATION: Balanced - Normal Play', 'Hold Defensive Formation']
+State: {'goal_gap': 2, 'minutes_left': 30, 'stamina': 80, 'possession': True, 'rating': 85, 'position': 'Winger', 'rating_gap': -10} --> Action: ['TEAM FORMATION: Balanced - Normal Play', 'Attempt cross']
+State: {'goal_gap': 0, 'minutes_left': 50, 'stamina': 60, 'possession': True, 'rating': 75, 'position': 'Midfielder', 'rating_gap': 5} --> Action: ['TEAM FORMATION: Balanced - Normal Play', 'Attempt pass']
+State: {'goal_gap': -2, 'minutes_left': 85, 'stamina': 25, 'possession': False, 'rating': 85, 'position': 'Defender', 'rating_gap': 15} --> Action: ['TEAM FORMATION: Balanced - Normal Play', 'Hold Defensive Formation']
+State: {'goal_gap': -1, 'minutes_left': 8, 'stamina': 45, 'possession': True, 'rating': 82, 'position': 'Striker', 'rating_gap': 2} --> Action: ['TEAM FORMATION: Rush - High Press', 'Attempt goal']
+State: {'goal_gap': 2, 'minutes_left': 5, 'stamina': 50, 'possession': True, 'rating': 79, 'position': 'Midfielder', 'rating_gap': -5} --> Action: ['TEAM FORMATION: Defend - Hold Possession', 'Attempt goal']
