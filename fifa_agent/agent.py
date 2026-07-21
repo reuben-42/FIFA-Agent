@@ -19,7 +19,7 @@ def sense():
     }
 
 
-def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left):
+def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left, has_yellow_card, team_red_cards, opp_red_cards):
     # Choose an action following a strict priority order:
     # 1. Fatigue overrides everything else.
     # 2. Being under threat with no ball forces a defensive response.
@@ -32,6 +32,9 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # ---------------------------------------------------------
     # LAYER 1: META / HEALTH ACTIONS:
     # ---------------------------------------------------------
+    if has_yellow_card:
+        actions.append("Play Cautious - Already have 1 Yellow Card")
+
     if stamina < 20:
         actions.append("Request Substitution")
     
@@ -41,9 +44,14 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     if minutes_left <= 10:
         if score_diff <= 0:  # Losing or tied -> be aggressive
             actions.append("TEAM FORMATION: Rush - High Press")
+        elif team_red_cards > opp_red_cards:
+            actions.append("TEAM FORMATION: Defensive - Compact Formation")  # our team has more men down than them, so we need a compact, tight defense
         else:  # Winning comfortably -> consolidate
             actions.append("TEAM FORMATION: Defend - Hold Possession")
     
+    elif team_red_cards < opp_red_cards:
+        actions.append("TEAM FORMATION: Aggressive - Exploit Numerical Advantage")      # opponent team has more men down, so we need to use that to our advantage
+
     elif urgency >= 3.5:
         actions.append("TEAM FORMATION: Rush - High Press")
     
@@ -53,15 +61,18 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # ---------------------------------------------------------
     # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS:
     # ---------------------------------------------------------
+    # Off-Ball Actions
     if not possession:
-        # Off-Ball Actions
         if threat_level > 4:
-            actions.append("Defend - Track Back")
+            if has_yellow_card:
+                actions.append("Defend - Avoid sliding tackles")
+            else:
+                actions.append("Defend - Track Back")
         else:
             actions.append("Hold Defensive Formation")
     
+    # On-Ball Actions
     else:
-        # On-Ball Actions
         if position.lower() == "striker":
             actions.append("Attempt goal")
         
@@ -92,15 +103,15 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     return actions
 
 
-def act(action):
+def act(actions):
     # Perform the chosen action. Here that just means printing it.
-    print(f"Action: {action}")
+    print(f"Actions: {actions}")
 
 
-def record(state, action):
+def record(state, actions):
     # Append the full state and the chosen action to log.txt for later review.
     # with open(LOG_PATH, "a") as log_file:
         # log_file.write(f"State: {state} --> Action: {action}\n")
     
     with open("fifa_agent/log.txt", "a", encoding="utf-8") as log_file:
-        log_file.write(f"State: {state} --> Action: {action}\n")
+        log_file.write(f"State: {state} --> Actions: {actions}\n")

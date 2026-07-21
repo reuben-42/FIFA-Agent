@@ -31,26 +31,30 @@ def get_time_state(minutes_left):
         return 1
 
 
-def get_threat_level(rating_gap):
+def get_threat_level(rating_gap, team_red_cards):
     # Convert the opponent's rating advantage (opponent rating - own rating) into a 1-5 threat scale.
     # 1 = opponent is much weaker, 5 = opponent is much stronger.
     if rating_gap <= -20:
-        return 1
+        value = 1
     elif rating_gap <= -5:
-        return 2
+        value = 2
     elif rating_gap <= 5:
-        return 3
+        value = 3
     elif rating_gap <= 20:
-        return 4
+        value = 4
     else:
-        return 5
+        value = 5
+    
+    value += team_red_cards     # Increases the threat by 1 for every red card our team has because our team is playing with a man down for every red card
+
+    return value
 
 
-def get_urgency(score_state, time_state, threat_level, possession):
+def get_urgency(score_state, time_state, threat_level, possession, opp_red_cards):
     # Combine score, time and threat into a single urgency score.
     # With the ball, threat doesn't matter as much as controlling score/clock.
     # Without the ball, threat level is factored in since danger is more immediate.
     if possession:
-        return 0.5 * score_state + 0.5 * time_state
+        return (0.5 * score_state + 0.5 * time_state) - (0.25 * opp_red_cards)
     else:
-        return 0.35 * score_state + 0.30 * threat_level + 0.35 * time_state
+        return (0.35 * score_state + 0.30 * threat_level + 0.35 * time_state) - (0.25 * opp_red_cards)       # Decreases urgency if the opponent has red cards, as you have more space and time to control the game

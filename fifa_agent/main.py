@@ -31,5 +31,5 @@ def run_default_scenario():
 
 
 if __name__ == "__main__":
-    run_default_scenario()
+    #run_default_scenario()
     tests.run_tests()
