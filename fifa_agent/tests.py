@@ -42,7 +42,7 @@ SCENARIOS = {
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0
     },
     "High Pressure": {
-        "goal_gap": -2, "minutes_left": 85, "stamina": 25,
+        "goal_gap": 1, "minutes_left": 85, "stamina": 25,
         "possession": False, "rating": 85, "position": "Defender", "rating_gap": 15,
         "has_yellow_card": True, "team_red_cards": 1, "opp_red_cards": 0
     },
