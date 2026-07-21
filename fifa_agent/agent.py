@@ -43,20 +43,20 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # ---------------------------------------------------------
     if minutes_left <= 10:
         if score_diff <= 0:  # Losing or tied -> be aggressive
-            actions.append("TEAM FORMATION: Rush - High Press")
+            actions.append("TEAM FORMATION: 4-2-4 (Rush - High Press)")
         elif team_red_cards > opp_red_cards:
-            actions.append("TEAM FORMATION: Defensive - Compact Formation")  # our team has more men down than them, so we need a compact, tight defense
+            actions.append("TEAM FORMATION: 5-4-1 (Defensive - Compact Formation)")  # our team has more men down than them, so we need a compact, tight defense
         else:  # Winning comfortably -> consolidate
-            actions.append("TEAM FORMATION: Defend - Hold Possession")
+            actions.append("TEAM FORMATION: 4-2-3-1 (Defend - Hold Possession)")
     
     elif team_red_cards < opp_red_cards:
-        actions.append("TEAM FORMATION: Aggressive - Exploit Numerical Advantage")      # opponent team has more men down, so we need to use that to our advantage
+        actions.append("TEAM FORMATION: 4-2-4 (Aggressive - Exploit Numerical Advantage)")      # opponent team has more men down, so we need to use that to our advantage
 
     elif urgency >= 3.5:
-        actions.append("TEAM FORMATION: Rush - High Press")
+        actions.append("TEAM FORMATION: 4-2-4 (Rush - High Press)")
     
     else:
-        actions.append("TEAM FORMATION: Balanced - Normal Play")
+        actions.append("TEAM FORMATION: 4-4-2 (Balanced - Normal Play)")
     
     # ---------------------------------------------------------
     # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS:
