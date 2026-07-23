@@ -26,76 +26,108 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     # 3. Endgame tactics (final 10 minutes).
     # 4. Otherwise, urgency drives how aggressively the team plays.
     # 5. If none of the above apply, a highly-rated player on the ball tries something special.
-    
+
     actions = []
+    
+    # ---------------------------------------------------------
+    # CONSTRAINT VARIABLES (Modified by Layers 1 & 2)
+    # ---------------------------------------------------------
+    can_sprint = True
+    can_tackle = True
+    team_formation = "Balanced" 
 
     # ---------------------------------------------------------
-    # LAYER 1: META / HEALTH ACTIONS:
+    # LAYER 1: META / HEALTH (Sets Physical/Disciplinary Limits)
     # ---------------------------------------------------------
     if has_yellow_card:
         actions.append("Play Cautious - Already have 1 Yellow Card")
+        can_tackle = False  # OVERRIDE: Prevents sliding tackles in Layer 3
 
     if stamina < 20:
         actions.append("Request Substitution")
+        can_sprint = False  # OVERRIDE: Prevents aggressive sprints/presses in Layer 3
     
     # ---------------------------------------------------------
-    # LAYER 2: TEAM FORMATION TACTICS:
+    # LAYER 2: TEAM FORMATION TACTICS 
     # ---------------------------------------------------------
     if minutes_left <= 10:
-        if score_diff <= 0:  # Losing or tied -> be aggressive
-            actions.append("TEAM FORMATION: 4-2-4 (Rush - High Press)")
+        if score_diff <= 0:  
+            team_formation = "Rush"
+            actions.append("TEAM FORMATION: 3-4-3 (Rush - High Press)")
         elif team_red_cards > opp_red_cards:
-            actions.append("TEAM FORMATION: 5-4-1 (Defensive - Compact Formation)")  # our team has more men down than them, so we need a compact, tight defense
-        else:  # Winning comfortably -> consolidate
+            team_formation = "Defensive"
+            actions.append("TEAM FORMATION: 5-4-0 (Defensive - Compact Formation)") 
+        else:  
+            team_formation = "Defensive"
             actions.append("TEAM FORMATION: 4-2-3-1 (Defend - Hold Possession)")
-    
+            
     elif team_red_cards < opp_red_cards:
-        actions.append("TEAM FORMATION: 4-2-4 (Aggressive - Exploit Numerical Advantage)")      # opponent team has more men down, so we need to use that to our advantage
+        team_formation = "Aggressive"
+        actions.append("TEAM FORMATION: 4-3-3 (Aggressive - Exploit Numerical Advantage)")      
+
+    elif team_red_cards > opp_red_cards:
+        team_formation = "Defensive"
+        actions.append("TEAM FORMATION: 4-4-1 (Defensive - Compact Formation)")
 
     elif urgency >= 3.5:
-        actions.append("TEAM FORMATION: 4-2-4 (Rush - High Press)")
+        team_formation = "Rush"
+        actions.append("TEAM FORMATION: 3-4-3 (Rush - High Press)")
     
     else:
+        team_formation = "Balanced"
         actions.append("TEAM FORMATION: 4-4-2 (Balanced - Normal Play)")
     
     # ---------------------------------------------------------
-    # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS:
+    # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS 
     # ---------------------------------------------------------
     # Off-Ball Actions
     if not possession:
         if threat_level > 4:
-            if has_yellow_card:
-                actions.append("Defend - Avoid sliding tackles")
+            if not can_tackle:
+                actions.append("Defend - Jockey opponent (Cannot risk sliding tackle)")
+            elif not can_sprint:
+                actions.append("Defend - Hold position (Too tired to track back fast)")
             else:
-                actions.append("Defend - Track Back")
+                actions.append("Defend - Track Back Aggressively")
         else:
             actions.append("Hold Defensive Formation")
     
     # On-Ball Actions
     else:
         if position.lower() == "striker":
-            actions.append("Attempt goal")
+            if team_formation == "Defensive":
+                actions.append("Hold up play and wait for support")
+            elif not can_sprint:
+                actions.append("Attempt quick shot or pass (Too tired to run)")
+            else:
+                actions.append("Attempt goal")
         
         elif position.lower() == "defender":
-            if threat_level >= 3:
+            if threat_level >= 3 or team_formation == "Defensive":
                 actions.append("Clear long")
             else:
                 actions.append("Attempt safe pass")
         
         elif position.lower() == "winger":
-            if rating > 65:
-                actions.append("Attempt cross")
+            if team_formation == "Defensive":
+                actions.append("Pass backwards to retain possession")
+            elif not can_sprint:
+                actions.append("Attempt short pass (Too tired to cross or dribble)")
+            elif rating > 65:
+                actions.append("Sprint and attempt cross")
             else:
                 actions.append("Attempt dribble")
         
         elif position.lower() == "midfielder":
-            if rating > 75:
-                actions.append("Attempt goal")
+            if team_formation == "Defensive":
+                actions.append("Hold possession and recycle ball")
+            elif rating > 75 and can_sprint:
+                actions.append("Push forward and attempt goal")
             else:
                 actions.append("Attempt pass")
         
         elif position.lower() == "goalkeeper":
-            if urgency >= 4:
+            if urgency >= 4 or team_formation == "Rush":
                 actions.append("Boot the ball downfield")
             else:
                 actions.append("Pass to nearby player")
