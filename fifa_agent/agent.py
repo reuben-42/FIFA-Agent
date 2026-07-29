@@ -19,7 +19,7 @@ def sense():
     }
 
 
-def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left, has_yellow_card, team_red_cards, opp_red_cards):
+def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left, has_yellow_card, team_red_cards, opp_red_cards, set_piece_type, set_piece_zone):
     # Choose an action following a strict priority order:
     # 1. Fatigue overrides everything else.
     # 2. Being under threat with no ball forces a defensive response.
@@ -46,9 +46,55 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
     if stamina < 20:
         actions.append("Request Substitution")
         can_sprint = False  # OVERRIDE: Prevents aggressive sprints/presses in Layer 3
+
+    # ---------------------------------------------------------
+    # LAYER 2: SET PIECE OVERRIDE (Interrupts normal play)
+    # ---------------------------------------------------------
+
+    #set_piece_type = ["None", "Penalty", "Corner", "Free-kick", "Throw-in"]
+    #set_piece_zone = ["Attacking", "Midfield", "Defending"]
+
+    if set_piece_type != "None":
+        
+        # OFFENSIVE SET PIECES (We have the ball)
+        if possession == True:
+            if set_piece_type == "Penalty":
+                actions.append("SET PIECE: Attempt high-power placed shot")
+                
+            elif set_piece_type == "Corner":
+                actions.append("SET PIECE: Whip cross into the penalty box")
+                
+            elif set_piece_type == "Free-kick":
+                if set_piece_zone == "Attacking":
+                    actions.append("SET PIECE: Attempt direct shot on goal")
+                else:
+                    actions.append("SET PIECE: Safe pass to retain possession")
+                    
+            elif set_piece_type == "Throw-in":
+                if set_piece_zone == "Attacking" and urgency >= 3.5:
+                    actions.append("SET PIECE: Attempt long throw into the box")
+                else:
+                    actions.append("SET PIECE: Safe short throw to nearest teammate")
+                    
+        # DEFENSIVE SET PIECES (Opponent has the ball)
+        else:
+            if set_piece_type == "Penalty":
+                if position.lower() == "goalkeeper":
+                    actions.append("SET PIECE: Dive to save penalty")
+                else:
+                    actions.append("SET PIECE: Stand outside the box and prepare to clear rebound")
+                    
+            elif set_piece_type == "Corner" or set_piece_type == "Free-kick":
+                actions.append("SET PIECE: Mark your man and prepare to clear")
+                
+            elif set_piece_type == "Throw-in":
+                actions.append("SET PIECE: Mark nearest opponent tightly")
+        
+        # Immediately return to prevent Layers 3 and 4 from running
+        return actions
     
     # ---------------------------------------------------------
-    # LAYER 2: TEAM FORMATION TACTICS 
+    # LAYER 3: TEAM FORMATION TACTICS 
     # ---------------------------------------------------------
     if minutes_left <= 10:
         if score_diff <= 0:  
@@ -78,7 +124,7 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
         actions.append("TEAM FORMATION: 4-4-2 (Balanced - Normal Play)")
     
     # ---------------------------------------------------------
-    # LAYER 3: INDIVIDUAL IMMEDIATE ACTIONS 
+    # LAYER 4: INDIVIDUAL IMMEDIATE ACTIONS 
     # ---------------------------------------------------------
     # Off-Ball Actions
     if not possession:
@@ -120,7 +166,7 @@ def decide(score_diff, stamina, urgency, threat_level, possession, rating, posit
         
         elif position.lower() == "midfielder":
             if team_formation == "Defensive":
-                actions.append("Hold possession and recycle ball")
+                actions.append("Hold possession and recycle ball (pass the ball backward or sideways away from pressure)")
             elif rating > 75 and can_sprint:
                 actions.append("Push forward and attempt goal")
             else:
