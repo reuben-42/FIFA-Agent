@@ -1,8 +1,6 @@
 # agent.py — the sense -> decide -> act -> record loop
 
-# import os
-
-# LOG_PATH = os.path.join(os.path.dirname(__file__), "log.txt")
+from datetime import datetime
 
 
 def sense():
@@ -186,10 +184,29 @@ def act(actions):
     print(f"Actions: {actions}")
 
 
-def record(state, actions):
+def record(scenario_name, state, actions):
     # Append the full state and the chosen action to log.txt for later review.
-    # with open(LOG_PATH, "a") as log_file:
-        # log_file.write(f"State: {state} --> Action: {action}\n")
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    log_entry = f"""==================================================\nSCENARIO: {scenario_name.upper()}\nTimestamp: {timestamp}\n==================================================\n"""
+    
+    log_entry += "Observed Game State:\n"
+    for key, val in state.items():
+        log_entry += f"  - {key}: {val}\n"
+        
+    log_entry += "\nTriggered Actions:\n"
+    for action in actions:
+        log_entry += f"  > {action}\n"
+
+    log_entry += "\nPass Rate:\n"
+    if actions == state["expected_outcome"]:
+        log_entry += f"  > 100% PASS RATE\n"
+    else:
+        log_entry += f"  - ERROR: Expected {state["expected_outcome"]}\n"
+        
+    log_entry += "==================================================\n\n\n"
     
     with open("fifa_agent/log.txt", "a", encoding="utf-8") as log_file:
-        log_file.write(f"State: {state} --> Actions: {actions}\n")
+        log_file.write(log_entry)
+

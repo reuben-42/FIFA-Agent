@@ -64,49 +64,57 @@ SCENARIOS = {
         "goal_gap": 2, "minutes_left": 30, "stamina": 80,
         "possession": True, "rating": 85, "position": "Winger", "rating_gap": -10,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 1,
-        "set_piece_type": "None", "set_piece_zone": "None"
+        "set_piece_type": "None", "set_piece_zone": "None", 
+        "expected_outcome": ["TEAM FORMATION: 4-3-3 (Aggressive - Exploit Numerical Advantage)", "Sprint and attempt cross"]
     },
     "Balanced (Open Play)": {
         "goal_gap": 0, "minutes_left": 50, "stamina": 60,
         "possession": True, "rating": 75, "position": "Midfielder", "rating_gap": 5,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0,
-        "set_piece_type": "None", "set_piece_zone": "None"
+        "set_piece_type": "None", "set_piece_zone": "None",
+        "expected_outcome": ["TEAM FORMATION: 4-4-2 (Balanced - Normal Play)", "Attempt pass"]
     },
     "High Pressure (Defending Free-kick)": {
         "goal_gap": -2, "minutes_left": 85, "stamina": 15,
         "possession": False, "rating": 85, "position": "Defender", "rating_gap": 15,
         "has_yellow_card": True, "team_red_cards": 1, "opp_red_cards": 0,
-        "set_piece_type": "Free-kick", "set_piece_zone": "Defending"
+        "set_piece_type": "Free-kick", "set_piece_zone": "Defending",
+        "expected_outcome": ["Play Cautious - Already have 1 Yellow Card", "Request Substitution", "SET PIECE: Mark your man and prepare to clear"]
     },
     "Endgame Losing (Attacking Corner)": {
         "goal_gap": -1, "minutes_left": 8, "stamina": 45,
         "possession": True, "rating": 82, "position": "Striker", "rating_gap": 2,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0,
-        "set_piece_type": "Corner", "set_piece_zone": "Attacking"
+        "set_piece_type": "Corner", "set_piece_zone": "Attacking",
+        "expected_outcome": ["SET PIECE: Whip cross into the penalty box"]
     },
     "Endgame Winning (Open Play)": {
         "goal_gap": 2, "minutes_left": 5, "stamina": 15, 
         "possession": True, "rating": 79, "position": "Midfielder", "rating_gap": -5,
         "has_yellow_card": False, "team_red_cards": 1, "opp_red_cards": 0,
-        "set_piece_type": "None", "set_piece_zone": "None"
+        "set_piece_type": "None", "set_piece_zone": "None",
+        "expected_outcome": ["Request Substitution", "TEAM FORMATION: 5-4-0 (Defensive - Compact Formation)", "Hold possession and recycle ball (pass the ball backward or sideways away from pressure)"]
     },
     "The Decisive Penalty (Attacking)": {
         "goal_gap": 0, "minutes_left": 2, "stamina": 60, 
         "possession": True, "rating": 88, "position": "Striker", "rating_gap": 0,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0,
-        "set_piece_type": "Penalty", "set_piece_zone": "Attacking"
+        "set_piece_type": "Penalty", "set_piece_zone": "Attacking",
+        "expected_outcome": ["SET PIECE: Attempt high-power placed shot"]
     },
     "Last Ditch Save (Defending Penalty)": {
         "goal_gap": 0, "minutes_left": 2, "stamina": 85, 
         "possession": False, "rating": 82, "position": "Goalkeeper", "rating_gap": 0,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0,
-        "set_piece_type": "Penalty", "set_piece_zone": "Defending"
+        "set_piece_type": "Penalty", "set_piece_zone": "Defending",
+        "expected_outcome": ["SET PIECE: Dive to save penalty"]
     },
     "Deep Defensive Throw-in": {
         "goal_gap": 1, "minutes_left": 65, "stamina": 55, 
         "possession": True, "rating": 72, "position": "Defender", "rating_gap": 5,
         "has_yellow_card": False, "team_red_cards": 0, "opp_red_cards": 0,
-        "set_piece_type": "Throw-in", "set_piece_zone": "Defending"
+        "set_piece_type": "Throw-in", "set_piece_zone": "Defending",
+        "expected_outcome": ["SET PIECE: Safe short throw to nearest teammate"]
     }
 }
 
@@ -138,7 +146,7 @@ def run_tests():
 
         print(f"\n[SCENARIO: {name}] State: {raw_state} --> Action: {action}")
         act(action)
-        record(raw_state, action)
+        record(name, raw_state, action)
 
 
 if __name__ == "__main__":
