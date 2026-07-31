@@ -18,13 +18,6 @@ def sense():
 
 
 def decide(score_diff, stamina, urgency, threat_level, possession, rating, position, minutes_left, has_yellow_card, team_red_cards, opp_red_cards, set_piece_type, set_piece_zone):
-    # Choose an action following a strict priority order:
-    # 1. Fatigue overrides everything else.
-    # 2. Being under threat with no ball forces a defensive response.
-    # 3. Endgame tactics (final 10 minutes).
-    # 4. Otherwise, urgency drives how aggressively the team plays.
-    # 5. If none of the above apply, a highly-rated player on the ball tries something special.
-
     actions = []
     
     # ---------------------------------------------------------
